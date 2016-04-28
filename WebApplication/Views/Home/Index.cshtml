@@ -43,7 +43,7 @@
         $(document).ready(function () {
             $("#btnQuery").click(function() {
 
-                $.get("/Cqrs/Query?service=users&query=GetUsersWithPermissionsQuery&args={'Permissions':['admin','user'],'ServiceName':'rpc'}",
+                $.get("/Cqrs/Query?service=users&query=GetUsersWithPermissionsQuery&args={'Permissions':['admin','user']}",
                     function (data) {
                         console.log(data);
                         $("#resQuery").html(JSON.stringify(data));

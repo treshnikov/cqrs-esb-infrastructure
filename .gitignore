@@ -1,0 +1,8 @@
+*.dll
+*.json
+bin/
+obj/
+packages/
+.vs/config/applicationhost.config
+*.suo
+*.user

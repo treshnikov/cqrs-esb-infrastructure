@@ -18,14 +18,21 @@
 <body>
     <div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="btn btn-primary" id="btnQuery">GetUsersWithPermissionsQuery</div>
                 <div class="btn btn-primary" id="btnCommand">Send Command</div>
-                <div class="btn btn-primary" id="btnQuery">Send Query</div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="col-md-6">
+                    <div class="panel">
+                        <div>Результат выполнения запроса:</div>
+                        <div id="resQuery"></div>
+                    </div>
+                </div>
                 <div class="panel">
+                    <div>Результат выполнения команды:</div>
                     <div id="resCommand"></div>
                 </div>
             </div>
@@ -34,11 +41,13 @@
 
     <script>
         $(document).ready(function () {
-            $("#btnCommand").click(function () {
+            $("#btnQuery").click(function() {
 
-                $.get("/Home/SendCommand?arg=123", function (data) {
-                    $("#resCommand").html(data);
-                });
+                $.get("/Cqrs/Query?service=users&query=GetUsersWithPermissionsQuery&args={'Permissions':['admin','user'],'ServiceName':'rpc'}",
+                    function (data) {
+                        console.log(data);
+                        $("#resQuery").html(JSON.stringify(data));
+                    });
 
             });
         });

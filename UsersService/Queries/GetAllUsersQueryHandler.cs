@@ -13,14 +13,21 @@ namespace UsersService
                 {
                     Id = "1",
                     Name = "Ivanov",
-                    Permissions = new List<Permission>() {new Permission() {Id = "1", Name = "p1"}}.ToArray()
+                    Permissions = new List<Permission>()
+                    {
+                        new Permission() {Id = "1", Name = "admin"},
+                        new Permission() {Id = "2", Name = "user"},
+                    }.ToArray()
                 },
 
                 new User()
                 {
                     Id = "2",
                     Name = "Petrov",
-                    Permissions = new List<Permission>() {new Permission() {Id = "2", Name = "p2"}}.ToArray()
+                    Permissions = new List<Permission>()
+                    {
+                        new Permission() {Id = "1", Name = "user"},
+                    }.ToArray()
                 }
             }.ToArray();
         }

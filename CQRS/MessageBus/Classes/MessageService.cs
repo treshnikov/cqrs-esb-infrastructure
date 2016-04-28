@@ -66,7 +66,8 @@ namespace CQRS
             // сериализовать данные команды
             //JsonConvert.SerializeObject()
             // отправить команду
-            await SendCommandAsync(new CommandMessage(JsonConvert.SerializeObject(command), routing[command.GetType()]));
+            var jsonCommand = JsonConvert.SerializeObject(command);
+            await SendCommandAsync(new CommandMessage(jsonCommand, routing[command.GetType()]));
         }
 
         public async Task<TQueryResult> SendQueryAsync<TQueryResult>(IQuery<TQueryResult> arg)
@@ -75,7 +76,8 @@ namespace CQRS
             // сериализовать данные запроса
             // отправить запрос
             // получить данные, десериализовать в объект
-            IMessageResult res = await SendQueryAsync(new QueryMessage(JsonConvert.SerializeObject(arg), arg.ServiceName));
+            var jsonQuery = JsonConvert.SerializeObject(arg);
+            var res = await SendQueryAsync(new QueryMessage(jsonQuery, arg.ServiceName));
 
             // todo res.IsError
             return JsonConvert.DeserializeObject<TQueryResult>(res.Body);

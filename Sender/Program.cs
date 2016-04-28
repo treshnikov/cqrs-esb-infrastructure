@@ -22,9 +22,9 @@ namespace Sender
                     Console.WriteLine("Send: " + arg);
                     //var x = ms.SendQueryAsync(new QueryMessage(arg, "rpc", TimeSpan.FromSeconds(10))).Result;
                     var x =
-                        ms.SendQueryAsync(new GetUsersWithPermissionsQuery()
+                        ms.SendQueryAsync(new GetUsersWithPermissionsQuery
                         {
-                            Permissions = new List<string>() {"1", "2", "3"}.ToArray()
+                            Permissions = new List<string> {"1", "2", "3"}.ToArray()
                         }).Result;
 
                     /*

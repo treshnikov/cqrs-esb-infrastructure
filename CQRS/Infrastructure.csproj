@@ -59,6 +59,7 @@
     <Compile Include="CQRS\IQuery.cs" />
     <Compile Include="CQRS\IQueryHandler.cs" />
     <Compile Include="DAL\IRepository.cs" />
+    <Compile Include="DAL\JsonRepository.cs" />
     <Compile Include="MessageBus\Classes\CommandMessage.cs" />
     <Compile Include="MessageBus\Contracts\ICommandMessage.cs" />
     <Compile Include="MessageBus\Contracts\IMessage.cs" />

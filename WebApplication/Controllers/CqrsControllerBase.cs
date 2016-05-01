@@ -30,7 +30,7 @@ namespace WebApplication.Controllers
                 throw new ArgumentException("Не найден обработчик " + commandInstance.GetType().Name + "Handler");
 
             // создаем экземпляр обработчика через контейнер, т.к. в конструкторе могут быть зависимости
-            var commandHandlerInstance = UnityContainerExtensions.Resolve(_container, commandHandlerType);
+            var commandHandlerInstance = _container.Resolve(commandHandlerType);
 
             // выполнить команду
             var method = commandHandlerType.GetMethod("Handle");
@@ -60,7 +60,7 @@ namespace WebApplication.Controllers
                 throw new ArgumentException("Не найден обработчик " + queryInstance.GetType().Name + "Handler");
 
             // создаем экземпляр обработчика через контейнер, т.к. в конструкторе могут быть зависимости
-            var queryHandlerInstance = UnityContainerExtensions.Resolve(_container, queryHandlerType);
+            var queryHandlerInstance = _container.Resolve(queryHandlerType);
 
             // выполнить запрос и вернуть данные
             var method = queryHandlerType.GetMethod("Handle");

@@ -1,0 +1,23 @@
+﻿[
+  {
+    "Id": "1",
+    "Name": "Иванов",
+    "Permissions": [
+      {
+        "Name": "admin"
+      },
+      {
+        "Name": "user"
+      }
+    ]
+  },
+  {
+    "Id": "2",
+    "Name": "Petrov",
+    "Permissions": [
+      {
+        "Name": "user"
+      }
+    ]
+  }
+]

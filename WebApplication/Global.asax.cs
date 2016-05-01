@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.SessionState;
 using CQRS;
+using CQRS.DAL;
 using Microsoft.Practices.Unity;
 
 namespace WebApplication
@@ -33,18 +34,7 @@ namespace WebApplication
         {
             _container = new UnityContainer();
             _container.RegisterInstance<IUnityContainer>(_container);
-
-            //todo
-            //var queryHandlers = AppDomain.CurrentDomain.GetAssemblies()
-            //    .SelectMany(s => s.GetTypes())
-            //    .Where(p => !p.IsInterface && typeof(IQueryHandler<,>).IsAssignableFrom(p)).ToList();
-            //foreach (var queryHandler in queryHandlers)
-            //{
-            //    var queryType = queryHandler.GetGenericArguments()[0];
-            //    var queryResultType = queryHandler.GetGenericArguments()[1];
-            //    var t = queryHandler.GetInterface("IQueryHandler");
-            //    _container.RegisterType(t, queryHandler);
-            //}
+            _container.RegisterType(typeof(IRepository), typeof(JsonRepository));
         }
 
         public override IController CreateController(System.Web.Routing.RequestContext requestContext, string controllerName)

@@ -2,15 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CQRS;
+using CQRS.DAL;
 
 namespace UsersService
 {
     public class GetUsersWithPermissionsQueryHandler : IQueryHandler<GetUsersWithPermissionsQuery, User[]>
     {
+        private readonly IRepository _repository;
+
+        public GetUsersWithPermissionsQueryHandler(IRepository repository)
+        {
+            _repository = repository;
+        }
+
         public User[] Handle(GetUsersWithPermissionsQuery query)
         {
             var res = new List<User>();
-            var users = new GetAllUsersQueryHandler().Handle(new GetAllUsersQuery());
+            var users = new GetAllUsersQueryHandler(_repository).Handle(new GetAllUsersQuery());
             foreach (var user in users)
             {
                 foreach (var permission in query.Permissions)

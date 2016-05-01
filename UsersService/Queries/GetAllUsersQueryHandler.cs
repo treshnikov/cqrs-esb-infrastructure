@@ -4,29 +4,23 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using CQRS;
+using CQRS.DAL;
 using Newtonsoft.Json;
 
 namespace UsersService
 {
     public class GetAllUsersQueryHandler : IQueryHandler<GetAllUsersQuery, User[]>
     {
-        public static string UsersDataFilePath
+        private readonly IRepository _repository;
+
+        public GetAllUsersQueryHandler(IRepository  repository)
         {
-            get
-            {
-                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                var uri = new UriBuilder(codeBase);
-                var path = Uri.UnescapeDataString(uri.Path);
-                var res = Path.GetDirectoryName(path);
-
-                return $"{res}\\..\\App_Data\\{@"users.json"}";
-            }
+            _repository = repository;
         }
-
 
         public User[] Handle(GetAllUsersQuery query)
         {
-            return JsonConvert.DeserializeObject<User[]>(File.ReadAllText(UsersDataFilePath));
+            return _repository.Get<User>();
         }
     }
 }

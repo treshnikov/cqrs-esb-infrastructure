@@ -15,21 +15,19 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div>
+    <div style="margin: 20px;">
+        <div class="btn btn-primary" id="btnQuery">GetUsersWithPermissionsQuery</div>
         <div class="row">
             <div class="col-md-6">
-                <div class="btn btn-primary" id="btnQuery">GetUsersWithPermissionsQuery</div>
-                <div class="btn btn-primary" id="btnCommand">Send Command</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="col-md-6">
                     <div class="panel">
                         <div>Результат выполнения запроса:</div>
                         <div id="resQuery"></div>
                     </div>
-                </div>
+            </div>
+        </div>
+        <div class="btn btn-primary" id="btnCommand">Send Command</div>
+        <div class="row">
+            <div class="col-md-6">
                 <div class="panel">
                     <div>Результат выполнения команды:</div>
                     <div id="resCommand"></div>
@@ -44,7 +42,14 @@
                 $.get("/Cqrs/Query?serviceName=users&queryName=GetUsersWithPermissionsQuery&json={'Permissions':['admin','user']}",
                     function(data) {
                         console.log(data);
-                        $("#resQuery").html(JSON.stringify(data));
+
+                        var str = "<table class='table table-bordered table-hover' ><tr><th>Id</th><th>Name</th><th>Permissinon</th></tr>";
+                        for (var i = 0; i < data.length; i++) {
+                            str += "<tr><td>" + data[i].Id + "</td><td>" + data[i].Name + "</td><td>" + JSON.stringify( data[i].Permissions) + "</td></tr>";
+                        }
+                        str += "</table>";
+
+                        $("#resQuery").html(str);
                     });
             });
         });

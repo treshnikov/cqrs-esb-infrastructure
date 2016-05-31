@@ -15,45 +15,61 @@
     <script src="../../Scripts/bootstrap.min.js" ></script>
 </head>
 <body>
-<div style="margin: 20px;">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="btn btn-primary" id="btnQuery">Получить пользователей с указанными правами</div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <input type="text" class="form-control" value="admin" id="permissionInput">
+    <div style="margin: 20px;">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="btn btn-primary" id="btnQueryAll">Получить пользователей </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel">
+                    <div>Результат выполнения запроса:</div>
+                    <div id="resQueryAll" style="min-height: 50px;"></div>
+                </div>
+            </div>
+        </div>
 
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="btn btn-primary" id="btnQuery">Получить пользователей с указанными правами</div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="permissionInput">Список прав через запятую</label>
+                    <input type="text" class="form-control" value="admin,user" id="permissionInput">
+                </div>
+
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel">
-                <div>Результат выполнения запроса:</div>
-                <div id="resQuery" style="min-height: 50px;"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel">
+                    <div>Результат выполнения запроса:</div>
+                    <div id="resQuery" style="min-height: 50px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="btn btn-primary" id="btnCommand">Send Command</div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel">
+                    <div>Результат выполнения команды:</div>
+                    <div id="resCommand" style="min-height: 50px;"></div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="btn btn-primary" id="btnCommand">Send Command</div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel">
-                <div>Результат выполнения команды:</div>
-                <div id="resCommand" style="min-height: 50px;"></div>
-            </div>
-        </div>
-    </div>
-</div>
 
     <script>
         $(document).ready(function () {
 
-            $("#btnQuery").click(function() {
+            $("#btnQuery").click(function () {
                 var permissionsFilter = JSON.stringify($("#permissionInput").val().split(','));
 
                 $.get("/Cqrs/Query?serviceName=users&queryName=GetUsersWithPermissionsQuery&json={'Permissions':" + permissionsFilter + "}",
-                    function(data) {
+                    function (data) {
                         console.log(data);
 
                         var str = "<table class='table table-bordered table-hover' ><tr><th>Id</th><th>Name</th><th>Permissinon</th></tr>";
@@ -69,6 +85,29 @@
                         str += "</table>";
 
                         $("#resQuery").html(str);
+                    });
+            });
+
+
+            $("#btnQueryAll").click(function () {
+
+                $.get("/Cqrs/Query?serviceName=users&queryName=GetAllUsersQuery&json={}",
+                    function (data) {
+                        console.log(data);
+
+                        var str = "<table class='table table-bordered table-hover' ><tr><th>Id</th><th>Name</th><th>Permissinon</th></tr>";
+                        for (var i = 0; i < data.length; i++) {
+                            var permissions = "";
+                            for (var j = 0; j < data[i].Permissions.length; j++) {
+                                console.log(data[i].Permissions[j], data[i].Permissions[j].Name);
+
+                                permissions += data[i].Permissions[j].Name + ", ";
+                            }
+                            str += "<tr><td>" + data[i].Id + "</td><td>" + data[i].Name + "</td><td>" + permissions + "</td></tr>";
+                        }
+                        str += "</table>";
+
+                        $("#resQueryAll").html(str);
                     });
             });
         });

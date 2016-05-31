@@ -10,9 +10,9 @@
 <head>
     <title>title</title>
 
-    <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="../../Scripts/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+    <link href="../../Scripts/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="../../Scripts/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
 <body>
     <div style="margin: 20px;">
@@ -45,7 +45,13 @@
 
                         var str = "<table class='table table-bordered table-hover' ><tr><th>Id</th><th>Name</th><th>Permissinon</th></tr>";
                         for (var i = 0; i < data.length; i++) {
-                            str += "<tr><td>" + data[i].Id + "</td><td>" + data[i].Name + "</td><td>" + JSON.stringify( data[i].Permissions) + "</td></tr>";
+                            var permissions = "";
+                            for (var j = 0; j < data[i].Permissions.length; j++) {
+                                permissions += data[i].Permissions[j];
+                                if (j != data[i].Permissions.length - 1)
+                                    permissions = + ", ";
+                            }
+                            str += "<tr><td>" + data[i].Id + "</td><td>" + data[i].Name + "</td><td>" + permissions + "</td></tr>";
                         }
                         str += "</table>";
 

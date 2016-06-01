@@ -79,7 +79,7 @@
             // получить пользователей по фильтру прав
             var onBtnGetUserByFilterClick = function () {
                 var permissionsFilter = JSON.stringify($("#permissionInput").val().split(','));
-                $.get("/Cqrs/Query?serviceName=users&queryName=GetUsersWithPermissionsQuery&json={'Permissions':" + permissionsFilter + "}",
+                $.get("/Cqrs/Query?queryName=GetUsersWithPermissionsQuery&json={'Permissions':" + permissionsFilter + "}",
                     function (data) {
                         console.log(data);
 
@@ -110,7 +110,7 @@
             // получить всех пользователей
             $("#btnQueryAll").click(function () {
 
-                $.get("/Cqrs/Query?serviceName=users&queryName=GetAllUsersQuery&json={}",
+                $.get("/Cqrs/Query?queryName=GetAllUsersQuery&json={}",
                     function (data) {
                         console.log(data);
 
@@ -134,7 +134,7 @@
             $("#btnAddNewUser").click(function () {
                 var permissions = JSON.stringify($("#newUserPermissions").val().split(','));
 
-                $.get("/Cqrs/Command?serviceName=users&commandName=AddUserCommand&json={Name: '" + $("#newUserName").val() + "', Permissions: " + permissions + " }",
+                $.get("/Cqrs/Command?commandName=AddUserCommand&json={Name: '" + $("#newUserName").val() + "', Permissions: " + permissions + " }",
                     function (data) {
                     });
             });

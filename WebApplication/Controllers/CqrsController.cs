@@ -12,13 +12,13 @@ namespace WebApplication.Controllers
         {
         }
 
-        public void Command(string serviceName, string commandName, string json)
+        public void Command(string commandName, string json)
         {
             var commandInstance = GetCommandInstance(commandName, json);
             ExcecuteCommand(commandInstance);
         }
 
-        public ActionResult Query(string serviceName, string queryName, string json)
+        public ActionResult Query(string queryName, string json)
         {
             var queryInstance = GetQueryInstance(queryName, json);
             var result = ExecuteQuery(queryInstance);

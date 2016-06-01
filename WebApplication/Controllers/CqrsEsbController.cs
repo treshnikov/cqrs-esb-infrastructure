@@ -22,8 +22,11 @@ namespace WebApplication.Controllers
             
             // отправить команду в шину данных
             _esbMessageService.Send(
-                new EsbMessage(JsonConvert.SerializeObject(commandObject), 
-                commandObject.ServiceName));
+                new EsbMessage(
+                    commandObject.ServiceName,
+                    commandName,
+                    JsonConvert.SerializeObject(commandObject)
+                ));
         }
 
         public string Query(string queryName, string json)
@@ -32,8 +35,11 @@ namespace WebApplication.Controllers
 
             // отправить запрос, получить ответ
             var res = _esbMessageService.SendAndGetResult(
-                new EsbMessage(JsonConvert.SerializeObject(queryInstance), 
-                queryInstance.ServiceName)).Result;
+                new EsbMessage(
+                    queryInstance.ServiceName,
+                    queryName,
+                    JsonConvert.SerializeObject(queryInstance)
+                )).Result;
 
             if (res.IsError)
                 throw new Exception(res.ErrorText);

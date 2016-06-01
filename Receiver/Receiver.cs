@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -37,8 +38,8 @@ namespace CQRS
                     var body = ea.Body;
                     var rk = ea.RoutingKey;
 
-                    var message = Encoding.UTF8.GetString(body);
-                    Console.WriteLine(" [x] Received {0} routing key:  {1} reply to: {2} corrId: {3}", message, rk, ea.BasicProperties.ReplyTo, ea.BasicProperties.CorrelationId);
+                    var message = JsonConvert.DeserializeObject<EsbMessageBody>(Encoding.UTF8.GetString(body));
+                    Console.WriteLine(" [x] Received {0} routing key:  {1} reply to: {2} corrId: {3}", message.Body, rk, ea.BasicProperties.ReplyTo, ea.BasicProperties.CorrelationId);
                     Thread.Sleep(3000);
 
                     

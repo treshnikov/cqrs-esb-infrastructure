@@ -28,7 +28,11 @@ namespace Sender
                     };
 
                     var x =
-                        ms.SendAndGetResult(new EsbMessage(JsonConvert.SerializeObject(msg), "demo", TimeSpan.FromSeconds(5))).Result;
+                        ms.SendAndGetResult(new EsbMessage(
+                            "demo",
+                            "header",
+                            JsonConvert.SerializeObject(msg), 
+                            TimeSpan.FromSeconds(5))).Result;
 
                     if (!x.IsError)
                     {

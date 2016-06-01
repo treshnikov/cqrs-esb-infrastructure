@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -58,7 +59,7 @@ namespace CQRS
 
             _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
-            var body = Encoding.UTF8.GetBytes(query.MessageBody);
+            var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(query.MessageBody));
 
             var properties = _channel.CreateBasicProperties();
             properties.Persistent = true;
@@ -119,7 +120,7 @@ namespace CQRS
 
             _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
-            var body = Encoding.UTF8.GetBytes(query.MessageBody);
+            var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(query.MessageBody));
 
             var properties = _channel.CreateBasicProperties();
             properties.SetPersistent(true);

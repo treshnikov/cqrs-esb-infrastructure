@@ -2,7 +2,7 @@ using System;
 
 namespace CQRS
 {
-    public interface IMessageResult
+    public interface IEsbMessageResult
     {
         bool IsError { get; }
         string ErrorText { get; }

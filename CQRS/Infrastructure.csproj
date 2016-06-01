@@ -60,17 +60,14 @@
     <Compile Include="CQRS\IQueryHandler.cs" />
     <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\JsonRepository.cs" />
-    <Compile Include="MessageBus\Classes\CommandMessage.cs" />
-    <Compile Include="MessageBus\Contracts\ICommandMessage.cs" />
-    <Compile Include="MessageBus\Contracts\IMessage.cs" />
-    <Compile Include="MessageBus\Contracts\IMessageResult.cs" />
-    <Compile Include="MessageBus\Contracts\IMessageService.cs" />
-    <Compile Include="MessageBus\Contracts\IQueryMessage.cs" />
-    <Compile Include="MessageBus\Classes\MessageReceiveTimeoutException.cs" />
-    <Compile Include="MessageBus\Classes\MessageResult.cs" />
-    <Compile Include="MessageBus\Classes\MessageService.cs" />
+    <Compile Include="MessageBus\Contracts\IEsbMessage.cs" />
+    <Compile Include="MessageBus\Contracts\IEsbMessageResult.cs" />
+    <Compile Include="MessageBus\Contracts\IEsbMessageService.cs" />
+    <Compile Include="MessageBus\Classes\EsbMessageReceiveTimeoutException.cs" />
+    <Compile Include="MessageBus\Classes\EsbMessageResult.cs" />
+    <Compile Include="MessageBus\Classes\EsbMessageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MessageBus\Classes\QueryMessage.cs" />
+    <Compile Include="MessageBus\Classes\EsbMessage.cs" />
     <Compile Include="Receiver.cs" />
   </ItemGroup>
   <ItemGroup>

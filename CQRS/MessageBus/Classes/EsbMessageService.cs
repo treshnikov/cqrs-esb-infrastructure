@@ -1,23 +1,19 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace CQRS
 {
-    public class MessageService : IMessageService, IMessageCQRSService, IDisposable
+    public class EsbMessageService : IEsbMessageService, IDisposable
     {
         private IConnection _connection;
         private IModel _channel;
 
         #region Ctor
 
-        public MessageService()
+        public EsbMessageService()
         {
             var factory = new ConnectionFactory() {HostName = "localhost"};
             _connection = factory.CreateConnection();
@@ -26,64 +22,38 @@ namespace CQRS
 
         #endregion
 
-        #region IMessageService
+        #region IEsbMessageService
 
-        public async Task<IMessageResult> SendQueryAsync(IQueryMessage query)
+        public async Task<IEsbMessageResult> SendAndGetResult(IEsbMessage query)
         {
-            return await Task<IMessageResult>.Factory.StartNew(() =>
+            return await Task<IEsbMessageResult>.Factory.StartNew(() =>
             {
                 try
                 {
                     return DoSendQuery(query);
                 }
-                catch (MessageReceiveTimeoutException ex)
+                catch (EsbMessageReceiveTimeoutException ex)
                 {
-                    return new MessageResult("", true, "Timeout expired " + query.ReceiveTimeout.TotalSeconds + " sec");
+                    return new EsbMessageResult("", true, "Timeout expired " + query.ReceiveTimeout.TotalSeconds + " sec");
                 }
             });
         }
 
-        public async Task SendCommandAsync(ICommandMessage command)
+        public async Task Send(IEsbMessage command)
         {
             await Task.Factory.StartNew(() => DoSendCommand(command));
         }
 
-        public void SendCommand(ICommandMessage command)
+        public void SendCommand(IEsbMessage command)
         {
             DoSendCommand(command);
         }
 
         #endregion
 
-        #region IMessageCQRSService
-
-        public async Task SendCommandAsync(ICommand command)
-        {
-            // получить им€ очереди в которую надо отправить данные = им€ сервиса
-            // сериализовать данные команды
-            // отправить команду
-            var jsonCommand = JsonConvert.SerializeObject(command);
-            await SendCommandAsync(new CommandMessage(jsonCommand, command.ServiceName));
-        }
-
-        public async Task<TQueryResult> SendQueryAsync<TQueryResult>(IQuery<TQueryResult> arg)
-        {
-            // получить им€ очереди в которую надо отправить данные = им€ сервиса
-            // сериализовать данные запроса
-            // отправить запрос
-            // получить данные, десериализовать в объект
-            var jsonQuery = JsonConvert.SerializeObject(arg);
-            var res = await SendQueryAsync(new QueryMessage(jsonQuery, arg.ServiceName));
-
-            // todo res.IsError
-            return JsonConvert.DeserializeObject<TQueryResult>(res.Body);
-        }
-
-        #endregion
-
         #region Private messages
 
-        private IMessageResult DoSendQuery(IQueryMessage query)
+        private IEsbMessageResult DoSendQuery(IEsbMessage query)
         {
             _channel.QueueDeclare(queue: query.QueueName,
                 durable: true,
@@ -122,17 +92,17 @@ namespace CQRS
                 if (answerReciwed && res.BasicProperties.CorrelationId == properties.CorrelationId)
                 {
                     var answer = Encoding.UTF8.GetString(res.Body);
-                    return new MessageResult(answer);
+                    return new EsbMessageResult(answer);
                 }
 
                 if (DateTime.Now - startReceiveTime > query.ReceiveTimeout)
                 {
-                    throw new MessageReceiveTimeoutException();
+                    throw new EsbMessageReceiveTimeoutException();
                 }
             }
         }
 
-        private void DoSendCommand(ICommandMessage query)
+        private void DoSendCommand(IEsbMessage query)
         {
             _channel.QueueDeclare(
                 queue: query.QueueName,

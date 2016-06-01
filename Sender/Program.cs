@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CQRS;
+using Newtonsoft.Json;
 using UsersService;
 
 namespace Sender
@@ -13,19 +14,21 @@ namespace Sender
     {
         static void Main(string[] args)
         {
-            using (var ms = new MessageService())
+            using (var ms = new EsbMessageService())
             {
 
                 while (true)
                 {
                     var arg = DateTime.Now.ToLongTimeString();
                     Console.WriteLine("Send: " + arg);
-                    //var x = ms.SendQueryAsync(new QueryMessage(arg, "rpc", TimeSpan.FromSeconds(10))).Result;
+
+                    var msg = new GetUsersWithPermissionsQuery
+                    {
+                        Permissions = new List<string> {"1", "2", "3"}.ToArray()
+                    };
+
                     var x =
-                        ms.SendQueryAsync(new GetUsersWithPermissionsQuery
-                        {
-                            Permissions = new List<string> {"1", "2", "3"}.ToArray()
-                        }).Result;
+                        ms.SendAndGetResult(new EsbMessage(JsonConvert.SerializeObject(msg), "demo")).Result;
 
                     /*
                     if (!x.IsError)

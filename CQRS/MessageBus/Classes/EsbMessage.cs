@@ -2,20 +2,20 @@
 
 namespace CQRS
 {
-    public class QueryMessage : IQueryMessage
+    public class EsbMessage : IEsbMessage
     {
         public string MessageBody { get; }
         public string QueueName { get; }
         public TimeSpan ReceiveTimeout { get; }
 
-        public QueryMessage(string messageBody, string queueName, TimeSpan receiveTimeout)
+        public EsbMessage(string messageBody, string queueName, TimeSpan receiveTimeout)
         {
             MessageBody = messageBody;
             QueueName = queueName;
             ReceiveTimeout = receiveTimeout;
         }
 
-        public QueryMessage(string messageBody, string queueName)
+        public EsbMessage(string messageBody, string queueName)
         {
             MessageBody = messageBody;
             QueueName = queueName;

@@ -2,7 +2,7 @@
 {
     public interface IMessage
     {
-        string Args { get; }
+        string MessageBody { get; }
         string QueueName { get; }
     }
 }

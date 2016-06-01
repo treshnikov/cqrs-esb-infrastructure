@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
+using CQRS;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 
@@ -40,7 +41,7 @@ namespace WebApplication.Controllers
             method.Invoke(commandHandlerInstance, new[] {commandInstance});
         }
 
-        protected static object GetCommandInstance(string commandName, string json)
+        protected static ICommand GetCommandInstance(string commandName, string json)
         {
             // по имени команды десериализовать json в объект
             var commandType =
@@ -51,7 +52,11 @@ namespace WebApplication.Controllers
                 throw new ArgumentException("Не найдено описание класса для команды " + commandName);
 
             var commandObject = JsonConvert.DeserializeObject(json, commandType);
-            return commandObject;
+
+            if (!(commandObject is ICommand))
+                throw new ArgumentException("Класс " + commandName + " не реализует ICommand");
+
+            return commandObject as ICommand;
         }
 
         protected object ExecuteQuery(object queryInstance)
@@ -71,7 +76,7 @@ namespace WebApplication.Controllers
             return result;
         }
 
-        protected static object GetQueryInstance(string queryName, string json)
+        protected static IAbstractQuery GetQueryInstance(string queryName, string json)
         {
             // по имени запроса десериализовать json в объект
             var queryType = LoadAllAssemblies().SelectMany(s => s.GetTypes())
@@ -81,7 +86,11 @@ namespace WebApplication.Controllers
                 throw new ArgumentException("Не найдено описание класса для запроса " + queryName);
 
             var queryInstance = JsonConvert.DeserializeObject(json, queryType);
-            return queryInstance;
+
+            if (!(queryInstance is IAbstractQuery))
+                throw new ArgumentException("Класс " + queryName + " не реализует IAbstractQuery");
+
+            return queryInstance as IAbstractQuery;
         }
 
         private static List<Assembly> _asseblies = null; 

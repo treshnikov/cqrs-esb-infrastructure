@@ -4,20 +4,20 @@ namespace CQRS
 {
     public class QueryMessage : IQueryMessage
     {
-        public string Args { get; }
+        public string MessageBody { get; }
         public string QueueName { get; }
         public TimeSpan ReceiveTimeout { get; }
 
-        public QueryMessage(string args, string queueName, TimeSpan receiveTimeout)
+        public QueryMessage(string messageBody, string queueName, TimeSpan receiveTimeout)
         {
-            Args = args;
+            MessageBody = messageBody;
             QueueName = queueName;
             ReceiveTimeout = receiveTimeout;
         }
 
-        public QueryMessage(string args, string queueName)
+        public QueryMessage(string messageBody, string queueName)
         {
-            Args = args;
+            MessageBody = messageBody;
             QueueName = queueName;
             ReceiveTimeout = TimeSpan.FromSeconds(30);
         }

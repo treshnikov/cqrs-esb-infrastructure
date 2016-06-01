@@ -40,7 +40,6 @@ namespace CQRS
                 {
                     return new MessageResult("", true, "Timeout expired " + query.ReceiveTimeout.TotalSeconds + " sec");
                 }
-
             });
         }
 
@@ -60,19 +59,16 @@ namespace CQRS
 
         public async Task SendCommandAsync(ICommand command)
         {
-            IDictionary<Type, string> routing = new Dictionary<Type, string>();
-
-            // получить имя очереди в которую надо отправить данные
+            // получить имя очереди в которую надо отправить данные = имя сервиса
             // сериализовать данные команды
-            //JsonConvert.SerializeObject()
             // отправить команду
             var jsonCommand = JsonConvert.SerializeObject(command);
-            await SendCommandAsync(new CommandMessage(jsonCommand, routing[command.GetType()]));
+            await SendCommandAsync(new CommandMessage(jsonCommand, command.ServiceName));
         }
 
         public async Task<TQueryResult> SendQueryAsync<TQueryResult>(IQuery<TQueryResult> arg)
         {
-            // получить имя очереди в которую надо отправить данные
+            // получить имя очереди в которую надо отправить данные = имя сервиса
             // сериализовать данные запроса
             // отправить запрос
             // получить данные, десериализовать в объект
@@ -97,7 +93,7 @@ namespace CQRS
 
             _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
-            var body = Encoding.UTF8.GetBytes(query.Args);
+            var body = Encoding.UTF8.GetBytes(query.MessageBody);
 
             var properties = _channel.CreateBasicProperties();
             properties.Persistent = true;
@@ -147,7 +143,7 @@ namespace CQRS
 
             _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
-            var body = Encoding.UTF8.GetBytes(query.Args);
+            var body = Encoding.UTF8.GetBytes(query.MessageBody);
 
             var properties = _channel.CreateBasicProperties();
             properties.SetPersistent(true);

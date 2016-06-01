@@ -14,7 +14,7 @@ namespace Sender
     {
         static void Main(string[] args)
         {
-            using (var ms = new EsbMessageService())
+            using (var ms = new RabbitMqEsbMessageService())
             {
 
                 while (true)
@@ -28,18 +28,17 @@ namespace Sender
                     };
 
                     var x =
-                        ms.SendAndGetResult(new EsbMessage(JsonConvert.SerializeObject(msg), "demo")).Result;
+                        ms.SendAndGetResult(new EsbMessage(JsonConvert.SerializeObject(msg), "demo", TimeSpan.FromSeconds(5))).Result;
 
-                    /*
                     if (!x.IsError)
                     {
                         Console.WriteLine("answer is: " + x.Body);
                     }
                     else
                     {
-                        Console.WriteLine("Timeout expired");
+                        Console.WriteLine("Error: " + x.ErrorText);
                     }
-                    */
+
                     Thread.Sleep(1000);
                 }
             }

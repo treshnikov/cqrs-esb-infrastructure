@@ -6,14 +6,14 @@ using RabbitMQ.Client.Events;
 
 namespace CQRS
 {
-    public class EsbMessageService : IEsbMessageService, IDisposable
+    public class RabbitMqEsbMessageService : IEsbMessageService, IDisposable
     {
         private IConnection _connection;
         private IModel _channel;
 
         #region Ctor
 
-        public EsbMessageService()
+        public RabbitMqEsbMessageService()
         {
             var factory = new ConnectionFactory() {HostName = "localhost"};
             _connection = factory.CreateConnection();
@@ -42,11 +42,6 @@ namespace CQRS
         public async Task Send(IEsbMessage command)
         {
             await Task.Factory.StartNew(() => DoSendCommand(command));
-        }
-
-        public void SendCommand(IEsbMessage command)
-        {
-            DoSendCommand(command);
         }
 
         #endregion
@@ -78,28 +73,39 @@ namespace CQRS
 
             _channel.QueueDeclare(properties.ReplyTo, false, true, true, null);
             var consumer = new QueueingBasicConsumer(_channel);
-            _channel.BasicConsume(
+            try
+            {
+                _channel.BasicConsume(
                 queue: properties.ReplyTo,
                 noAck: true,
                 consumer: consumer);
 
             var startReceiveTime = DateTime.Now;
-
-            while (true)
-            {
-                BasicDeliverEventArgs res;
-                var answerReciwed = consumer.Queue.Dequeue(100, out res);
-                if (answerReciwed && res.BasicProperties.CorrelationId == properties.CorrelationId)
+ 
+            
+                while (true)
                 {
-                    var answer = Encoding.UTF8.GetString(res.Body);
-                    return new EsbMessageResult(answer);
-                }
+                    BasicDeliverEventArgs res;
+                    var answerReciwed = consumer.Queue.Dequeue(100, out res);
+                    if (answerReciwed && res.BasicProperties.CorrelationId == properties.CorrelationId)
+                    {
+                        var answer = Encoding.UTF8.GetString(res.Body);
+                        return new EsbMessageResult(answer);
+                    }
 
-                if (DateTime.Now - startReceiveTime > query.ReceiveTimeout)
-                {
-                    throw new EsbMessageReceiveTimeoutException();
+                    if (DateTime.Now - startReceiveTime > query.ReceiveTimeout)
+                    {
+                        throw new EsbMessageReceiveTimeoutException();
+                    }
                 }
             }
+            finally
+            {
+                _channel.QueueDelete(properties.ReplyTo);
+                consumer.Queue.Close();
+
+            }
+            
         }
 
         private void DoSendCommand(IEsbMessage query)

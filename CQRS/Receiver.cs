@@ -9,12 +9,12 @@ namespace CQRS
 {
     public class Receiver
     {
-        public Receiver()
+        public Receiver(string queueName)
         {
-            Receive();
+            Receive(queueName);
         }
 
-        private static void Receive()
+        private static void Receive(string queueName)
         {
             var factory = new ConnectionFactory() { HostName = "localhost" };
             using (var connection = factory.CreateConnection())
@@ -23,7 +23,6 @@ namespace CQRS
                 //channel.ExchangeDeclare(exchange: "logs", type: "direct");
                 //var queueName = channel.QueueDeclare().QueueName;
 
-                var queueName = "rpc";
                 channel.QueueDeclare(queue: queueName,
                                  durable: true,
                                  exclusive: false,
@@ -42,7 +41,7 @@ namespace CQRS
                     Console.WriteLine(" [x] Received {0} routing key:  {1} reply to: {2} corrId: {3}", message, rk, ea.BasicProperties.ReplyTo, ea.BasicProperties.CorrelationId);
                     Thread.Sleep(3000);
 
-                    channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+                    
 
                     if (ea.BasicProperties.ReplyTo != null)
                     {
@@ -52,6 +51,8 @@ namespace CQRS
                             ea.BasicProperties.ReplyTo,
                             replyProps,
                             Encoding.UTF8.GetBytes("received!!!"));
+
+                        channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
                     }
                 };
 
@@ -62,6 +63,7 @@ namespace CQRS
 
                 Console.WriteLine(" Press [enter] to exit.");
                 Console.ReadLine();
+
             }
         }
 

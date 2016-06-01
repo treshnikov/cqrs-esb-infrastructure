@@ -13,10 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "WebApplic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsersService", "UsersService\UsersService.csproj", "{DB5E4B62-3A7D-49F9-9413-1AB5E073A953}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B801E6EB-90AB-4C04-83F1-9D37E4FD977A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B801E6EB-90AB-4C04-83F1-9D37E4FD977A}"
 	ProjectSection(SolutionItems) = preProject
 		readme.md = readme.md
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RabbitMqDemo", "RabbitMqDemo", "{115BF51D-7684-454C-9017-6E72668E0D91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,5 +49,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B4CB565A-1E7F-4667-B07A-1D38519966E3} = {B801E6EB-90AB-4C04-83F1-9D37E4FD977A}
+		{EC638C55-E35C-4CD0-8447-9F7CB6F21A84} = {115BF51D-7684-454C-9017-6E72668E0D91}
+		{CA7E898F-ED92-4E5B-BE5B-DB0A0CFA4E19} = {115BF51D-7684-454C-9017-6E72668E0D91}
 	EndGlobalSection
 EndGlobal

@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AddUserCommand.cs" />
     <Compile Include="Queries\GetAllUsersQuery.cs" />
     <Compile Include="Queries\GetUsersWithPermissionsQuery.cs" />
     <Compile Include="Domain\User.cs" />
@@ -56,9 +57,7 @@
       <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

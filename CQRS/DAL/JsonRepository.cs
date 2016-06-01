@@ -23,5 +23,10 @@ namespace CQRS.DAL
             return JsonConvert.DeserializeObject<T[]>(File.ReadAllText(filePath));
         }
 
+        public void Set<T>(T[] items)
+        {
+            var filePath = GetJsonFilePath(typeof(T[])).Replace("[", "").Replace("]", "");
+            File.WriteAllText(filePath, JsonConvert.SerializeObject(items));
+        }
     }
 }

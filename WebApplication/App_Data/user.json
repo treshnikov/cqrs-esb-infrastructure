@@ -1,23 +1,33 @@
 ﻿[
   {
     "Id": "1",
-    "Name": "Иванов",
+    "Name": "Александров Иван",
     "Permissions": [
-      {
-        "Name": "admin"
-      },
-      {
-        "Name": "user"
-      }
+      { "Name": "admin" },
+      { "Name": "user" }
     ]
   },
   {
     "Id": "2",
-    "Name": "Petrov",
+    "Name": "Петров Игорь",
+    "Permissions": [ { "Name": "user" } ]
+  },
+  {
+    "Id": "3",
+    "Name": "Сахтеров Олег",
     "Permissions": [
-      {
-        "Name": "user"
-      }
+      { "Name": "admin" },
+      { "Name": "user" }
     ]
-  }
+  },
+  {
+    "Id": "4",
+    "Name": "Шварц Ибрагим",
+    "Permissions": [ { "Name": "user" } ]
+  },
+  {
+    "Id": "5",
+    "Name": "Островский Ринат",
+    "Permissions": [ { "Name": "user" } ]
+  },
 ]

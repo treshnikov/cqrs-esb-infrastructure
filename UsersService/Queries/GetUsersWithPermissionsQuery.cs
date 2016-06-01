@@ -8,7 +8,7 @@ namespace UsersService
     public class GetUsersWithPermissionsQuery : IQuery<User[]>
     {
         public string[] Permissions { get; set; }
-        public string ServiceName => "rpc";
+        public string ServiceName => "userService";
     }
 
     public class GetUsersWithPermissionsQueryHandler : IQueryHandler<GetUsersWithPermissionsQuery, User[]>

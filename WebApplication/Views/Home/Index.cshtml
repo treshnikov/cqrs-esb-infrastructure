@@ -16,6 +16,8 @@
 </head>
 <body>
     <div style="margin: 20px;">
+
+
         <div class="row">
             <div class="col-md-3">
                 <div class="btn btn-primary" id="btnQueryAll">Получить пользователей </div>
@@ -51,6 +53,7 @@
                 </div>
             </div>
         </div>
+
         <div class="btn btn-primary" id="btnAddNewUser">Добавить пользователя</div>
         <div class="row">
             <div class="col-md-3">
@@ -133,21 +136,6 @@
 
                 $.get("/Cqrs/Command?serviceName=users&commandName=AddUserCommand&json={Name: '" + $("#newUserName").val() + "', Permissions: " + permissions + " }",
                     function (data) {
-                        console.log(data);
-
-                        var str = "<table class='table table-bordered table-hover' ><tr><th>Id</th><th>Name</th><th>Permissinon</th></tr>";
-                        for (var i = 0; i < data.length; i++) {
-                            var permissions = "";
-                            for (var j = 0; j < data[i].Permissions.length; j++) {
-                                console.log(data[i].Permissions[j], data[i].Permissions[j].Name);
-
-                                permissions += data[i].Permissions[j].Name + ", ";
-                            }
-                            str += "<tr><td>" + data[i].Id + "</td><td>" + data[i].Name + "</td><td>" + permissions + "</td></tr>";
-                        }
-                        str += "</table>";
-
-                        $("#resQueryAll").html(str);
                     });
             });
         });

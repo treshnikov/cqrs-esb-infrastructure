@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using CQRS;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace WebApplication.Controllers
 {
@@ -29,7 +30,7 @@ namespace WebApplication.Controllers
                 ));
         }
 
-        public string Query(string queryName, string json)
+        public ActionResult Query(string queryName, string json)
         {
             var queryInstance = GetQueryInstance(queryName, json);
 
@@ -44,7 +45,8 @@ namespace WebApplication.Controllers
             if (res.IsError)
                 throw new Exception(res.ErrorText);
 
-            return res.Body;
+            return Content(res.Body, "application/json");
+            
         }
     }
 }

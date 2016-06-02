@@ -8,18 +8,18 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApplication.Controllers
 {
-    public class CqrsEsbController : CqrsControllerBase
+    public class CqrsEsbController
     {
         private readonly IEsbMessageService _esbMessageService;
 
-        public CqrsEsbController(IUnityContainer container, IEsbMessageService esbMessageService) : base()
+        public CqrsEsbController(IEsbMessageService esbMessageService)
         {
             _esbMessageService = esbMessageService;
         }
 
         public void Command(string commandName, string json)
         {
-            var commandObject = GetCommandInstance(commandName, json);
+            var commandObject = CqrsHelper.GetCommandInstance(commandName, json);
             
             // отправить команду в шину данных
             _esbMessageService.Send(
@@ -30,9 +30,9 @@ namespace WebApplication.Controllers
                 ));
         }
 
-        public ActionResult Query(string queryName, string json)
+        public string Query(string queryName, string json)
         {
-            var queryInstance = GetQueryInstance(queryName, json);
+            var queryInstance = CqrsHelper.GetQueryInstance(queryName, json);
 
             // отправить запрос, получить ответ
             var res = _esbMessageService.SendAndGetResult(
@@ -45,8 +45,7 @@ namespace WebApplication.Controllers
             if (res.IsError)
                 throw new Exception(res.ErrorText);
 
-            return Content(res.Body, "application/json");
-            
+            return res.Body;
         }
     }
 }

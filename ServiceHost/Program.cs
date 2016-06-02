@@ -40,16 +40,15 @@ namespace ServiceHost
                     var message = JsonConvert.DeserializeObject<EsbMessageBody>(Encoding.UTF8.GetString(body));
                     Console.WriteLine(" [x] Received {0} routing key:  {1} reply to: {2} corrId: {3}", message.Body, rk, ea.BasicProperties.ReplyTo, ea.BasicProperties.CorrelationId);
 
-                    var container = UnityControllerFactory.ConfigContainer();
                     if (message.Header.EndsWith("Command"))
                     {
-                        var commandInstance = CqrsControllerBase.GetCommandInstance(message.Header, message.Body);
-                        CqrsControllerBase.ExcecuteCommand(commandInstance);
+                        var commandInstance = CqrsHelper.GetCommandInstance(message.Header, message.Body);
+                        CqrsHelper.ExcecuteCommand(commandInstance);
                     }
                     else if (message.Header.EndsWith("Query"))
                     {
-                        var queryInstance = CqrsControllerBase.GetQueryInstance(message.Header, message.Body);
-                        var result = CqrsControllerBase.ExecuteQuery(queryInstance);
+                        var queryInstance = CqrsHelper.GetQueryInstance(message.Header, message.Body);
+                        var result = CqrsHelper.ExecuteQuery(queryInstance);
 
                         if (ea.BasicProperties.ReplyTo != null)
                         {

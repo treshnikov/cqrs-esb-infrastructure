@@ -115,7 +115,6 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CqrsController.cs" />
-    <Compile Include="Controllers\CqrsControllerBase.cs" />
     <Compile Include="Controllers\CqrsEsbController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">

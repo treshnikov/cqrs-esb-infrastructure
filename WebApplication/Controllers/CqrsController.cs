@@ -6,7 +6,7 @@ using UsersService;
 
 namespace WebApplication.Controllers
 {
-    public class CqrsController : CqrsControllerBase
+    public class CqrsController : Controller
     {
         public CqrsController(IUnityContainer container) : base()
         {
@@ -14,14 +14,14 @@ namespace WebApplication.Controllers
 
         public void Command(string commandName, string json)
         {
-            var commandInstance = GetCommandInstance(commandName, json);
-            ExcecuteCommand(commandInstance);
+            var commandInstance = CqrsHelper.GetCommandInstance(commandName, json);
+            CqrsHelper.ExcecuteCommand(commandInstance);
         }
 
         public ActionResult Query(string queryName, string json)
         {
-            var queryInstance = GetQueryInstance(queryName, json);
-            var result = ExecuteQuery(queryInstance);
+            var queryInstance = CqrsHelper.GetQueryInstance(queryName, json);
+            var result = CqrsHelper.ExecuteQuery(queryInstance);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }

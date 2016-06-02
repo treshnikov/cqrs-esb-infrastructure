@@ -32,17 +32,7 @@ namespace WebApplication
 
         public UnityControllerFactory()
         {
-            _container = ConfigContainer();
-        }
-
-        public static IUnityContainer ConfigContainer()
-        {
-            var container = new UnityContainer();
-            container.RegisterInstance<IUnityContainer>(container);
-            container.RegisterType<IEsbMessageService, RabbitMqEsbMessageService>();
-            container.RegisterType(typeof (IRepository), typeof (JsonRepository));
-
-            return container;
+            _container = ContainerConfigurator.Get();
         }
 
         public override IController CreateController(System.Web.Routing.RequestContext requestContext, string controllerName)

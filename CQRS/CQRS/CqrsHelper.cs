@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Web.Mvc;
-using CQRS;
-using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
+using Microsoft.Practices.Unity;
 
-namespace WebApplication.Controllers
+namespace CQRS
 {
-    /// <summary>
-    /// Базовый контроллер CQRS
-    /// Умеет десериализовывать объекты запросов и команд и выполнять их
-    /// </summary>
-    public class CqrsControllerBase : Controller
+    public static class CqrsHelper
     {
         public static void ExcecuteCommand(object commandInstance)
         {
@@ -27,7 +21,7 @@ namespace WebApplication.Controllers
                 throw new ArgumentException("Не найден обработчик " + commandInstance.GetType().Name + "Handler");
 
             // создаем экземпляр обработчика через контейнер, т.к. в конструкторе могут быть зависимости
-            var commandHandlerInstance = UnityControllerFactory.ConfigContainer().Resolve(commandHandlerType);
+            var commandHandlerInstance = ContainerConfigurator.Get().Resolve(commandHandlerType);
 
             // выполнить команду
             var method = commandHandlerType.GetMethod("Handle");
@@ -61,7 +55,7 @@ namespace WebApplication.Controllers
                 throw new ArgumentException("Не найден обработчик " + queryInstance.GetType().Name + "Handler");
 
             // создаем экземпляр обработчика через контейнер, т.к. в конструкторе могут быть зависимости
-            var queryHandlerInstance = UnityControllerFactory.ConfigContainer().Resolve(queryHandlerType);
+            var queryHandlerInstance = ContainerConfigurator.Get().Resolve(queryHandlerType);
 
             // выполнить запрос и вернуть данные
             var method = queryHandlerType.GetMethod("Handle");

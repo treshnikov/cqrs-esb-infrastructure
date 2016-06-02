@@ -59,13 +59,15 @@ namespace ServiceHost
                                 replyProps,
                                 Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(result)));
 
-                            channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
                         }
                     }
                     else
                     {
                         return;
                     }
+
+                    channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+
 
                 };
 

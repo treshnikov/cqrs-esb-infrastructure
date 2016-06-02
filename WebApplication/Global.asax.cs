@@ -34,6 +34,7 @@ namespace WebApplication
         {
             _container = new UnityContainer();
             _container.RegisterInstance<IUnityContainer>(_container);
+            _container.RegisterType<IEsbMessageService, RabbitMqEsbMessageService>();
             _container.RegisterType(typeof(IRepository), typeof(JsonRepository));
         }
 

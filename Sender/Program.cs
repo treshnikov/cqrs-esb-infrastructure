@@ -32,7 +32,7 @@ namespace Sender
                             "demo",
                             "header",
                             JsonConvert.SerializeObject(msg), 
-                            TimeSpan.FromSeconds(5))).Result;
+                            TimeSpan.FromSeconds(5)));
 
                     if (!x.IsError)
                     {

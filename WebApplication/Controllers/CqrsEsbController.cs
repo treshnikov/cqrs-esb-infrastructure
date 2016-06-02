@@ -39,7 +39,7 @@ namespace WebApplication.Controllers
                     queryInstance.ServiceName,
                     queryName,
                     JsonConvert.SerializeObject(queryInstance)
-                )).Result;
+                ));
 
             if (res.IsError)
                 throw new Exception(res.ErrorText);

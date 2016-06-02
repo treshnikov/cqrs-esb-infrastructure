@@ -4,7 +4,7 @@ namespace CQRS
 {
     public interface IEsbMessageService
     {
-        Task<IEsbMessageResult> SendAndGetResult(IEsbMessage query);
-        Task Send(IEsbMessage command);
+        IEsbMessageResult SendAndGetResult(IEsbMessage query);
+        void Send(IEsbMessage command);
     }
 }

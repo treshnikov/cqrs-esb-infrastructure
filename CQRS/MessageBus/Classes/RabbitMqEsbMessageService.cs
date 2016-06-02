@@ -25,24 +25,21 @@ namespace CQRS
 
         #region IEsbMessageService
 
-        public async Task<IEsbMessageResult> SendAndGetResult(IEsbMessage query)
+        public IEsbMessageResult SendAndGetResult(IEsbMessage query)
         {
-            return await Task<IEsbMessageResult>.Factory.StartNew(() =>
+            try
             {
-                try
-                {
-                    return DoSendQuery(query);
-                }
-                catch (EsbMessageReceiveTimeoutException ex)
-                {
-                    return new EsbMessageResult("", true, "Timeout expired " + query.ReceiveTimeout.TotalSeconds + " sec");
-                }
-            });
+                return DoSendQuery(query);
+            }
+            catch (EsbMessageReceiveTimeoutException ex)
+            {
+                return new EsbMessageResult("", true, "Timeout expired " + query.ReceiveTimeout.TotalSeconds + " sec");
+            }
         }
 
-        public async Task Send(IEsbMessage command)
+        public void Send(IEsbMessage command)
         {
-            await Task.Factory.StartNew(() => DoSendCommand(command));
+            DoSendCommand(command);
         }
 
         #endregion

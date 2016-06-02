@@ -19,7 +19,7 @@ namespace CQRS
         {
             MessageBody = new EsbMessageBody(header, messageBody);
             QueueName = queueName;
-            ReceiveTimeout = TimeSpan.FromSeconds(30);
+            ReceiveTimeout = TimeSpan.FromSeconds(5);
         }
 
     }

@@ -18,7 +18,8 @@ namespace CQRS.DAL
             var pathFromConfig = ConfigurationManager.AppSettings["jsonRepositoryPath"];
             if (string.IsNullOrWhiteSpace(pathFromConfig))
             {
-                return String.Format("{0}\\..\\App_Data\\{1}", res, type.Name + ".json");
+                throw new ArgumentException(
+                    "В .config файле не задан ключ jsonRepositoryPath с относительным путем к репозиторию");
             }
             else
             {

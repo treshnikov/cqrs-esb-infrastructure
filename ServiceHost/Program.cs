@@ -8,12 +8,14 @@ using CQRS;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using WebApplication;
+using WebApplication.Controllers;
 
 namespace ServiceHost
 {
     class Program
     {
-        private static readonly string ServiceName = "serService";
+        private static readonly string ServiceName = "userService";
 
         static void Main(string[] args)
         {
@@ -37,19 +39,35 @@ namespace ServiceHost
 
                     var message = JsonConvert.DeserializeObject<EsbMessageBody>(Encoding.UTF8.GetString(body));
                     Console.WriteLine(" [x] Received {0} routing key:  {1} reply to: {2} corrId: {3}", message.Body, rk, ea.BasicProperties.ReplyTo, ea.BasicProperties.CorrelationId);
-                    Thread.Sleep(3000);
 
-                    if (ea.BasicProperties.ReplyTo != null)
+                    var container = UnityControllerFactory.ConfigContainer();
+                    if (message.Header.EndsWith("Command"))
                     {
-                        var replyProps = channel.CreateBasicProperties();
-                        replyProps.CorrelationId = ea.BasicProperties.CorrelationId;
-                        channel.BasicPublish("",
-                            ea.BasicProperties.ReplyTo,
-                            replyProps,
-                            Encoding.UTF8.GetBytes("received!!!"));
-
-                        channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+                        var commandInstance = CqrsControllerBase.GetCommandInstance(message.Header, message.Body);
+                        CqrsControllerBase.ExcecuteCommand(commandInstance);
                     }
+                    else if (message.Header.EndsWith("Query"))
+                    {
+                        var queryInstance = CqrsControllerBase.GetQueryInstance(message.Header, message.Body);
+                        var result = CqrsControllerBase.ExecuteQuery(queryInstance);
+
+                        if (ea.BasicProperties.ReplyTo != null)
+                        {
+                            var replyProps = channel.CreateBasicProperties();
+                            replyProps.CorrelationId = ea.BasicProperties.CorrelationId;
+                            channel.BasicPublish("",
+                                ea.BasicProperties.ReplyTo,
+                                replyProps,
+                                Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(result)));
+
+                            channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+
                 };
 
                 channel.BasicConsume(

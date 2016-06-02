@@ -16,14 +16,7 @@ namespace WebApplication.Controllers
     /// </summary>
     public class CqrsControllerBase : Controller
     {
-        private readonly IUnityContainer _container;
-
-        public CqrsControllerBase(IUnityContainer container)
-        {
-            _container = container;
-        }
-
-        protected void ExcecuteCommand(object commandInstance)
+        public static void ExcecuteCommand(object commandInstance)
         {
             // найти обработчик для данной команды
             var commandHandlerType =
@@ -34,14 +27,14 @@ namespace WebApplication.Controllers
                 throw new ArgumentException("Не найден обработчик " + commandInstance.GetType().Name + "Handler");
 
             // создаем экземпляр обработчика через контейнер, т.к. в конструкторе могут быть зависимости
-            var commandHandlerInstance = _container.Resolve(commandHandlerType);
+            var commandHandlerInstance = UnityControllerFactory.ConfigContainer().Resolve(commandHandlerType);
 
             // выполнить команду
             var method = commandHandlerType.GetMethod("Handle");
             method.Invoke(commandHandlerInstance, new[] {commandInstance});
         }
 
-        protected static ICommand GetCommandInstance(string commandName, string json)
+        public static ICommand GetCommandInstance(string commandName, string json)
         {
             // по имени команды десериализовать json в объект
             var commandType =
@@ -59,7 +52,7 @@ namespace WebApplication.Controllers
             return commandObject as ICommand;
         }
 
-        protected object ExecuteQuery(object queryInstance)
+        public static object ExecuteQuery(object queryInstance)
         {
             // найти обработчик для данного запроса
             var queryHandlerType = LoadAllAssemblies().SelectMany(s => s.GetTypes())
@@ -68,7 +61,7 @@ namespace WebApplication.Controllers
                 throw new ArgumentException("Не найден обработчик " + queryInstance.GetType().Name + "Handler");
 
             // создаем экземпляр обработчика через контейнер, т.к. в конструкторе могут быть зависимости
-            var queryHandlerInstance = _container.Resolve(queryHandlerType);
+            var queryHandlerInstance = UnityControllerFactory.ConfigContainer().Resolve(queryHandlerType);
 
             // выполнить запрос и вернуть данные
             var method = queryHandlerType.GetMethod("Handle");
@@ -76,7 +69,7 @@ namespace WebApplication.Controllers
             return result;
         }
 
-        protected static IQuery GetQueryInstance(string queryName, string json)
+        public static IQuery GetQueryInstance(string queryName, string json)
         {
             // по имени запроса десериализовать json в объект
             var queryType = LoadAllAssemblies().SelectMany(s => s.GetTypes())

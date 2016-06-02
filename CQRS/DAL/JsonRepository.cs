@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
@@ -14,7 +15,15 @@ namespace CQRS.DAL
             var path = Uri.UnescapeDataString(uri.Path);
             var res = Path.GetDirectoryName(path);
 
-            return String.Format("{0}\\..\\App_Data\\{1}", res, type.Name + ".json");
+            var pathFromConfig = ConfigurationManager.AppSettings["jsonRepositoryPath"];
+            if (string.IsNullOrWhiteSpace(pathFromConfig))
+            {
+                return String.Format("{0}\\..\\App_Data\\{1}", res, type.Name + ".json");
+            }
+            else
+            {
+                return String.Format("{0}" + pathFromConfig + "\\{1}", res, type.Name + ".json");
+            }
         }
 
         public T[] Get<T>()

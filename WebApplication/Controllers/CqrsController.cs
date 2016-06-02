@@ -8,7 +8,7 @@ namespace WebApplication.Controllers
 {
     public class CqrsController : CqrsControllerBase
     {
-        public CqrsController(IUnityContainer container) : base(container)
+        public CqrsController(IUnityContainer container) : base()
         {
         }
 

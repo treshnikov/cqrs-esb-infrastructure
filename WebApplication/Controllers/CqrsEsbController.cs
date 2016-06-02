@@ -11,7 +11,7 @@ namespace WebApplication.Controllers
     {
         private readonly IEsbMessageService _esbMessageService;
 
-        public CqrsEsbController(IUnityContainer container, IEsbMessageService esbMessageService) : base(container)
+        public CqrsEsbController(IUnityContainer container, IEsbMessageService esbMessageService) : base()
         {
             _esbMessageService = esbMessageService;
         }

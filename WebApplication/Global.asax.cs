@@ -28,14 +28,21 @@ namespace WebApplication
 
     public class UnityControllerFactory : DefaultControllerFactory
     {
-        private  readonly IUnityContainer _container;
+        private IUnityContainer _container;
 
         public UnityControllerFactory()
         {
-            _container = new UnityContainer();
-            _container.RegisterInstance<IUnityContainer>(_container);
-            _container.RegisterType<IEsbMessageService, RabbitMqEsbMessageService>();
-            _container.RegisterType(typeof(IRepository), typeof(JsonRepository));
+            _container = ConfigContainer();
+        }
+
+        public static IUnityContainer ConfigContainer()
+        {
+            var container = new UnityContainer();
+            container.RegisterInstance<IUnityContainer>(container);
+            container.RegisterType<IEsbMessageService, RabbitMqEsbMessageService>();
+            container.RegisterType(typeof (IRepository), typeof (JsonRepository));
+
+            return container;
         }
 
         public override IController CreateController(System.Web.Routing.RequestContext requestContext, string controllerName)

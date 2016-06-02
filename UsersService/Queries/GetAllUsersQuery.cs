@@ -4,7 +4,7 @@ using CQRS.DAL;
 
 namespace UsersService
 {
-    public class GetAllUsersQuery : IQuery<User[]>
+    public class GetAllUsersQuery : IQuery
     {
         public string ServiceName => "userService";
     }

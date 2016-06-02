@@ -76,7 +76,7 @@ namespace WebApplication.Controllers
             return result;
         }
 
-        protected static IAbstractQuery GetQueryInstance(string queryName, string json)
+        protected static IQuery GetQueryInstance(string queryName, string json)
         {
             // по имени запроса десериализовать json в объект
             var queryType = LoadAllAssemblies().SelectMany(s => s.GetTypes())
@@ -87,10 +87,10 @@ namespace WebApplication.Controllers
 
             var queryInstance = JsonConvert.DeserializeObject(json, queryType);
 
-            if (!(queryInstance is IAbstractQuery))
+            if (!(queryInstance is IQuery))
                 throw new ArgumentException("Класс " + queryName + " не реализует IAbstractQuery");
 
-            return queryInstance as IAbstractQuery;
+            return queryInstance as IQuery;
         }
 
         private static List<Assembly> _asseblies = null; 

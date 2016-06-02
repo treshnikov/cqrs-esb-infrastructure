@@ -1,11 +1,7 @@
 ﻿namespace CQRS
 {
-    public interface IAbstractQuery
+    public interface IQuery
     {
         string ServiceName { get; }
-    }
-
-    public interface IQuery<TQueryResult> : IAbstractQuery
-    {
     }
 }

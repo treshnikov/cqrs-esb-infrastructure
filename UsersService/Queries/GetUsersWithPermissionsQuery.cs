@@ -5,7 +5,7 @@ using CQRS.DAL;
 
 namespace UsersService
 {
-    public class GetUsersWithPermissionsQuery : IQuery<User[]>
+    public class GetUsersWithPermissionsQuery : IQuery
     {
         public string[] Permissions { get; set; }
         public string ServiceName => "userService";

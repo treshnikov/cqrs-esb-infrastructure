@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApplication.Controllers
 {
-    public class CqrsEsbController
+    public class CqrsEsbController : Controller
     {
         private readonly IEsbMessageService _esbMessageService;
 
@@ -30,7 +30,7 @@ namespace WebApplication.Controllers
                 ));
         }
 
-        public string Query(string queryName, string json)
+        public ActionResult Query(string queryName, string json)
         {
             var queryInstance = CqrsHelper.GetQueryInstance(queryName, json);
 
@@ -45,7 +45,7 @@ namespace WebApplication.Controllers
             if (res.IsError)
                 throw new Exception(res.ErrorText);
 
-            return res.Body;
+            return Content(res.Body, "application/json");
         }
     }
 }

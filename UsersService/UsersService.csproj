@@ -63,7 +63,6 @@
   <ItemGroup>
     <Content Include="UI\Admin\app.js" />
     <Content Include="UI\Admin\Index.html" />
-    <Content Include="UI\settings.js" />
     <Content Include="UI\Client\app.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

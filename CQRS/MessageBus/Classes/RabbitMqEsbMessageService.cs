@@ -16,7 +16,7 @@ namespace CQRS
 
         public RabbitMqEsbMessageService()
         {
-            var factory = new ConnectionFactory() {HostName = "localhost"};
+            var factory = new ConnectionFactory() { HostName = "localhost" };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
         }
@@ -78,9 +78,7 @@ namespace CQRS
                 noAck: true,
                 consumer: consumer);
 
-            var startReceiveTime = DateTime.Now;
- 
-            
+                var startReceiveTime = DateTime.Now;
                 while (true)
                 {
                     BasicDeliverEventArgs res;
@@ -103,7 +101,7 @@ namespace CQRS
                 consumer.Queue.Close();
 
             }
-            
+
         }
 
         private void DoSendCommand(IEsbMessage query)

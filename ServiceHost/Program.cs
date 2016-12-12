@@ -63,6 +63,7 @@ namespace ServiceHost
                     }
                     else
                     {
+                        Console.WriteLine("Неопознанное сообщение: " + message.Header);
                         return;
                     }
 

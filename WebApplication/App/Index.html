@@ -1,0 +1,179 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Инфраструктура проекта CQRS + ESB + Microservices</title>
+
+
+    <script src="../Scripts/jquery-2.2.3.min.js"></script>
+    <link href="../Scripts/bootstrap.min.css" rel="stylesheet">
+    <script src="../Scripts/bootstrap.min.js"></script>
+
+    <!-- angular -->
+    <script type='text/javascript' src='../Scripts/angular.min.js'></script>
+    <script type='text/javascript' src='../Scripts/angular-route.min.js'></script>
+    <script type='text/javascript' src='../Scripts/angular-animate.min.js'></script>
+    <script type='text/javascript' src='../Scripts/angular-sanitize.min.js'></script>
+
+    <script type='text/javascript' src='app.js'></script>
+
+</head>
+
+<body>
+<div ng-app="app">
+
+</div>
+
+
+    <div style="margin: 20px;">
+        <div class="row panel">
+            <div class="col-md-6">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="sendViaEsb"> Отправлять запросы через шину сообщений (должен быть запущен сервис RabbitMQ и проект ServiceHost)
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="btn btn-primary" id="btnQueryAll">Получить пользователей </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="">
+                        <div>Результат выполнения запроса:</div>
+                        <div id="resQueryAll" style="min-height: 50px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="btn btn-primary" id="btnQuery">Получить пользователей с указанными правами</div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="permissionInput">Список прав через запятую</label>
+                        <input type="text" class="form-control" value="admin,user" id="permissionInput">
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel">
+                        <div>Результат выполнения запроса:</div>
+                        <div id="resQuery" style="min-height: 50px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel">
+            <div class="btn btn-primary" id="btnAddNewUser">Добавить пользователя</div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="newUserName">Имя пользователя</label>
+                        <input type="text" class="form-control" value="Сидоров Роман" id="newUserName">
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="newUserPermissions">Права пользователя через запятую</label>
+                        <input type="text" class="form-control" value="user" id="newUserPermissions">
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+    var getControllerName = function() {
+        return ($("#sendViaEsb").is(":checked"))
+            ? "CqrsEsb"
+            : "Cqrs";
+    }
+
+    $(document).ready(function() {
+
+        // получить пользователей по фильтру прав
+        var onBtnGetUserByFilterClick = function() {
+            var permissionsFilter = JSON.stringify($("#permissionInput").val().split(','));
+            $.get("/" + getControllerName() + "/Query?queryName=GetUsersWithPermissionsQuery&json={'Permissions':" + permissionsFilter + "}",
+                function(data) {
+                    console.log(data);
+
+                    var str = "<table class='table table-bordered table-hover' ><tr><th>Id</th><th>Name</th><th>Permissinon</th></tr>";
+                    for (var i = 0; i < data.length; i++) {
+                        var permissions = "";
+                        for (var j = 0; j < data[i].Permissions.length; j++) {
+                            console.log(data[i].Permissions[j], data[i].Permissions[j].Name);
+
+                            permissions += data[i].Permissions[j].Name + ", ";
+                        }
+                        str += "<tr><td>" + data[i].Id + "</td><td>" + data[i].Name + "</td><td>" + permissions + "</td></tr>";
+                    }
+                    str += "</table>";
+
+                    $("#resQuery").html(str);
+                }).fail(function(data) {
+                alert("Ошибка");
+            });
+        };
+
+        $("#btnQuery").click(onBtnGetUserByFilterClick);
+
+        $("#permissionInput").keypress(function(e) {
+            if (e.which == 13) {
+                onBtnGetUserByFilterClick();
+            }
+        });
+
+        // получить всех пользователей
+        $("#btnQueryAll").click(function() {
+
+            $.get("/" + getControllerName() + "/Query?queryName=GetAllUsersQuery&json={}",
+                function(data) {
+                    console.log(data);
+
+                    var str = "<table class='table table-bordered table-hover' ><tr><th>Id</th><th>Name</th><th>Permissinon</th></tr>";
+                    for (var i = 0; i < data.length; i++) {
+                        var permissions = "";
+                        for (var j = 0; j < data[i].Permissions.length; j++) {
+                            console.log(data[i].Permissions[j], data[i].Permissions[j].Name);
+
+                            permissions += data[i].Permissions[j].Name + ", ";
+                        }
+                        str += "<tr><td>" + data[i].Id + "</td><td>" + data[i].Name + "</td><td>" + permissions + "</td></tr>";
+                    }
+                    str += "</table>";
+
+                    $("#resQueryAll").html(str);
+                }).fail(function(data) {
+                alert("Ошибка");
+            });;
+        });
+
+        // добавить пользователя
+        $("#btnAddNewUser").click(function() {
+            var permissions = JSON.stringify($("#newUserPermissions").val().split(','));
+
+            $.get("/" + getControllerName() + "/Command?commandName=AddUserCommand&json={Name: '" + $("#newUserName").val() + "', Permissions: " + permissions + " }",
+                function(data) {
+                }).fail(function(data) {
+                alert("Ошибка");
+            });
+        });
+    });
+    </script>
+</body>
+</html>

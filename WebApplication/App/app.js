@@ -20,3 +20,28 @@ app.service('clientSettings', function () {
         return "/td";
     };
 });
+
+app.service('microservices', function () {
+    this.modules = [];
+
+    this.add = function (moduleName) {
+        this.modules.push(moduleName);
+    };
+
+    this.get = function() {
+        return this.modules;
+    }
+
+});
+
+app.controller(
+    'homeCtrl',
+    function ($rootScope, $scope, $http, $location, $interval, microservices) {
+        $scope.modules = [];
+
+        // todo - получать перечень модулей по подписке или единожды после всех добавлений
+        $interval(function () {
+            $scope.modules = microservices.get();
+            console.log("microservices - " + microservices.get().length);
+        }, 1000);
+    });

@@ -111,6 +111,12 @@
   <ItemGroup>
     <Content Include="App\app.js" />
     <Content Include="App\Index.html" />
+    <Content Include="App\Microservices\UsersService\Admin\app.js" />
+    <Content Include="App\Microservices\UsersService\Admin\Index.html" />
+    <Content Include="App\Microservices\UsersService\Client\app.js" />
+    <Content Include="App\Microservices\UsersService\Client\Index.html" />
+    <Content Include="App\Microservices\UsersService\Index.html" />
+    <Content Include="App\Microservices\UsersService\app.js" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
@@ -908,7 +914,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App\Microservices\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

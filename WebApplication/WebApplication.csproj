@@ -135,6 +135,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App\Microservices\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

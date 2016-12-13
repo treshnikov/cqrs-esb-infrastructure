@@ -20,25 +20,18 @@
 </head>
 
 <body ng-app="app">
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div id="main" ng-controller="homeCtrl">
+    <div id="main" ng-controller="homeCtrl">
 
-                <div ng-repeat="module in modules">
-                    <ng-include src="module.clientUiUrl">
-                    </ng-include>
+        <div ng-repeat="module in modules">
+            <ng-include src="module.clientUiUrl">
+            </ng-include>
 
-                </div>
-
-                <div ng-view>
-                </div>
-
-            </div>
-            
         </div>
+
+        <div ng-view>
+        </div>
+
     </div>
-</div>
 
 
 </body>

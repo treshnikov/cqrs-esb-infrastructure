@@ -58,12 +58,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UI\Client\Index.html" />
+    <Content Include="UI\app.js" />
+    <Content Include="UI\Client\app.js" />
+    <Content Include="UI\Client\users.html" />
+    <Content Include="UI\Client\index.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UI\Admin\app.js" />
     <Content Include="UI\Admin\Index.html" />
-    <Content Include="UI\Client\app.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,10 +6,12 @@
 app.config(function($routeProvider) {
     $routeProvider
         .when('/home', {
-            templateUrl: 'index.html',
+            templateUrl: 'modules.html',
             controller: '',
             resolve: {}
-        });
+        })
+        //.otherwise({ redirectTo: 'home' })
+    ;
 });
 
 

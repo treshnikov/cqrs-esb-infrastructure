@@ -39,22 +39,23 @@ namespace CQRS
                     var rk = ea.RoutingKey;
 
                     var message = JsonConvert.DeserializeObject<EsbMessageBody>(Encoding.UTF8.GetString(body));
-                    Console.WriteLine(" [x] Received {0} routing key:  {1} reply to: {2} corrId: {3}", message.Body, rk, ea.BasicProperties.ReplyTo, ea.BasicProperties.CorrelationId);
-                    Thread.Sleep(3000);
+                    //Console.WriteLine(" [x] Received {0} routing key:  {1} reply to: {2} corrId: {3}", message.Body, rk, ea.BasicProperties.ReplyTo, ea.BasicProperties.CorrelationId);
+                    Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " Получено сообщение");
+                    //Thread.Sleep(3000);
 
                     
 
-                    if (ea.BasicProperties.ReplyTo != null)
-                    {
-                        var replyProps = channel.CreateBasicProperties();
-                        replyProps.CorrelationId = ea.BasicProperties.CorrelationId;
-                        channel.BasicPublish("",
-                            ea.BasicProperties.ReplyTo,
-                            replyProps,
-                            Encoding.UTF8.GetBytes("received!!!"));
+                    //if (ea.BasicProperties.ReplyTo != null)
+                    //{
+                    //    var replyProps = channel.CreateBasicProperties();
+                    //    replyProps.CorrelationId = ea.BasicProperties.CorrelationId;
+                    //    channel.BasicPublish("",
+                    //        ea.BasicProperties.ReplyTo,
+                    //        replyProps,
+                    //        Encoding.UTF8.GetBytes("received!!!"));
 
-                        channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
-                    }
+                    //    channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+                    //}
                 };
 
                 channel.BasicConsume(

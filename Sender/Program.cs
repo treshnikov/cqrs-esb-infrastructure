@@ -27,23 +27,31 @@ namespace Sender
                         Permissions = new List<string> {"1", "2", "3"}.ToArray()
                     };
 
-                    var x =
-                        ms.SendAndGetResult(new EsbMessage(
-                            "demo",
-                            "header",
-                            JsonConvert.SerializeObject(msg), 
-                            TimeSpan.FromSeconds(5)));
+                    Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " Сообщение от правлено");
 
-                    if (!x.IsError)
-                    {
-                        Console.WriteLine("answer is: " + x.Body);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error: " + x.ErrorText);
-                    }
+                    var esbMsg = new EsbMessage(
+                        "demo",
+                        "header",
+                        JsonConvert.SerializeObject(msg),
+                        TimeSpan.FromSeconds(5));
 
-                    Thread.Sleep(1000);
+                    //var x =
+                    //    ms.SendAndGetResult(esbMsg);
+
+                    ms.Send(esbMsg);
+
+                    //Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " Получен ответ");
+
+                    //if (!x.IsError)
+                    //{
+                    //    Console.WriteLine("answer is: " + x.Body);
+                    //}
+                    //else
+                    //{
+                    //    Console.WriteLine("Error: " + x.ErrorText);
+                    //}
+
+                    Thread.Sleep(1);
                 }
             }
         }

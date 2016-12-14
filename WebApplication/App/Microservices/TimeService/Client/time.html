@@ -1,0 +1,27 @@
+﻿<div>
+    <div id="btnQueryTime" class="btn btn-info">Узнать время</div>
+</div>
+
+<script>
+    var getControllerName = function() {
+        return ($("#sendViaEsb").is(":checked"))
+            ? "CqrsEsb"
+            : "Cqrs";
+    }
+
+    $(document).ready(function() {
+
+        $("#btnQueryTime").click(function () {
+            console.log("click");
+
+            $.get("/" + getControllerName() + "/Query?queryName=GetTimeQuery&json={}",
+                function(data) {
+                    console.log(data);
+                    alert(data);
+                }).fail(function(data) {
+                alert("Ошибка");
+            });;
+        });
+
+    });
+</script>

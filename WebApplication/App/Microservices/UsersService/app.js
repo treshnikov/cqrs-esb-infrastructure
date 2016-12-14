@@ -7,7 +7,6 @@ setTimeout(function () {
         ident: "UsersService",
         name: "Справочник пользователей",
         permissionsNeeded: ["users"],
-        url: "Microservices/UsersService/Index.html",
         clientUiUrl: "Microservices/UsersService/Client/Index.html",
         adminUiUrl: "Microservices/UsersService/Admin/Index.html"
     });
@@ -24,5 +23,5 @@ app.config(function ($routeProvider) {
             resolve: {}
         });
 
-    console.log("route registered");
+    console.log("users service route registered");
 });

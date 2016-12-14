@@ -109,7 +109,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App\modules.html" />
     <Content Include="App\microserviceReferences.js" />
     <Content Include="App\app.js" />
     <Content Include="App\Index.html" />
@@ -187,6 +186,10 @@
     <ProjectReference Include="..\CQRS\Infrastructure.csproj">
       <Project>{B4CB565A-1E7F-4667-B07A-1D38519966E3}</Project>
       <Name>Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeService\TimeService.csproj">
+      <Project>{0b1d2779-4b2b-4410-932c-ccca3dca05c2}</Project>
+      <Name>TimeService</Name>
     </ProjectReference>
     <ProjectReference Include="..\UsersService\UsersService.csproj">
       <Project>{DB5E4B62-3A7D-49F9-9413-1AB5E073A953}</Project>

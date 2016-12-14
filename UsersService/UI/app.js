@@ -10,5 +10,19 @@ setTimeout(function () {
         url: "Microservices/UsersService/Index.html",
         clientUiUrl: "Microservices/UsersService/Client/Index.html",
         adminUiUrl: "Microservices/UsersService/Admin/Index.html"
-});
+    });
 }, 500);
+
+var app = angular.module('app');
+
+app.config(function ($routeProvider) {
+
+    $routeProvider
+        .when('/users', {
+            templateUrl: "Microservices/UsersService/Client/users.html",
+            controller: '',
+            resolve: {}
+        });
+
+    console.log("route registered");
+});

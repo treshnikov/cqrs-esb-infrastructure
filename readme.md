@@ -1,7 +1,5 @@
-﻿## Пример инфраструктуры для проекта на основе CQRS + RabbitMq
-* UserService - содержит логику микросервиса
-* ServiceHost - реализует контейнер для обработки команд микросервиса
-* WebApplication - пользовательский UI
-
-### Требования
-* Для отладки понадобится установленный экземпляр RabbitMQ
+# Overview
+Template for the .NET web-application infrastructure project based on microservices and the CQRS approach using RabbitMq. It contains of the following projects:
+- UserService - a project that contains business logic.
+- ServiceHost - implements a container for handling microservices commands.
+- WebApplication - user interface.
